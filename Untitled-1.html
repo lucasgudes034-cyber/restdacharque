@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aluízio Restaurante Da Charque | Tradição em Condado-PE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ouro: #d4a373;
+            --marrom: #2b1d0e;
+            --fundo: #fdfaf5;
+            --whatsapp: #25d366;
+            --branco: #ffffff;
+            --alerta: #e67e22;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--fundo); color: #333; line-height: 1.6; overflow-x: hidden; }
+
+        /* Animações de Scroll */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Header */
+        header {
+            background-color: var(--marrom);
+            padding: 15px 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--ouro);
+        }
+
+        .logo { font-family: 'Playfair Display', serif; color: var(--ouro); font-size: 1.4rem; font-weight: 900; letter-spacing: 2px; }
+
+        /* Hero Section */
+        .hero {
+            height: 60vh;
+            position: relative;
+            overflow: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; text-align: center; padding: 100px 20px 0 20px;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center;
+            z-index: -1;
+            animation: slowZoom 20s infinite alternate;
+        }
+
+        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.1); } }
+
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 10px; }
+
+        .btn-whats {
+            background-color: var(--whatsapp);
+            color: white; padding: 15px 30px; border-radius: 5px;
+            text-decoration: none; font-weight: bold; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* SEÇÃO TRADIÇÃO (DESTAQUE) */
+        .secao-tradicao { 
+            padding: 100px 10%; 
+            background-color: var(--branco); 
+            text-align: center;
+            position: relative;
+        }
+        .secao-tradicao::after {
+            content: "Aluízio";
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 10rem; font-family: 'Playfair Display'; opacity: 0.03; z-index: 0; pointer-events: none;
+        }
+
+        .tradicao-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+        .tradicao-content h2 { font-family: 'Playfair Display', serif; color: var(--marrom); font-size: 2.5rem; margin-bottom: 20px; }
+        .divisor-ouro { height: 4px; width: 100px; background: var(--ouro); margin: 20px auto; border-radius: 2px; }
+        .tradicao-text { font-size: 1.2rem; line-height: 2; color: #555; font-style: italic; }
+
+        /* Cardápio Interativo */
+        .cardapio-container { max-width: 1200px; margin: 0 auto 100px auto; padding: 0 20px; }
+        .titulo-cardapio { text-align: center; font-family: 'Playfair Display', serif; font-size: 2.8rem; margin-bottom: 50px; color: var(--marrom); }
+
+        .grid-3-colunas { display: flex; justify-content: space-between; gap: 25px; }
+
+        .coluna {
+            flex: 1; background: var(--branco); border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05); overflow: hidden;
+            border-bottom: 6px solid var(--ouro); transition: 0.4s;
+        }
+        .coluna:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+        .header-classe {
+            background-color: var(--marrom); color: var(--ouro);
+            padding: 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .lista-itens {
+            list-style: none; max-height: 0; overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); padding: 0 25px;
+        }
+
+        .coluna.ativa .lista-itens { max-height: 800px; padding: 30px 25px; }
+        .coluna.ativa .seta { transform: rotate(180deg); transition: 0.4s; }
+
+        .item-lista {
+            padding: 15px 0; border-bottom: 1px solid #eee;
+            display: flex; align-items: center; font-weight: 600; color: #444;
+            transition: 0.3s;
+        }
+        .item-lista:hover { color: var(--alerta); padding-left: 10px; }
+        .item-lista::before { content: "•"; color: var(--ouro); margin-right: 15px; font-size: 1.5rem; }
+
+        /* Quentinhas */
+        .observacao-box {
+            max-width: 900px; margin: 60px auto; background-color: #fff8ef;
+            border: 2px dashed var(--ouro); padding: 40px; border-radius: 20px; text-align: center;
+        }
+
+        footer { background: var(--marrom); color: white; text-align: center; padding: 60px 5%; border-top: 5px solid var(--ouro); }
+
+        @media (max-width: 992px) {
+            .grid-3-colunas { flex-direction: column; }
+            .secao-tradicao { padding: 60px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">ALUÍZIO RESTAURANTE</div>
+    <a href="https://wa.me/5581993048735" class="btn-whats" style="padding: 10px 20px; font-size: 0.8rem; animation: none;">PEDIR AGORA</a>
+</header>
+
+<section class="hero">
+    <h1>Aluízio Restaurante Da Charque</h1>
+    <p style="font-size: 1.2rem; letter-spacing: 1px;">A essência da gastronomia de Condado-PE</p>
+</section>
+
+<section class="secao-tradicao reveal">
+    <div class="tradicao-content">
+        <p style="text-transform: uppercase; color: var(--ouro); font-weight: bold; letter-spacing: 3px;">Desde sempre com você</p>
+        <h2>Uma Tradição que Atravessa Gerações</h2>
+        <div class="divisor-ouro"></div>
+        <p class="tradicao-text">
+            O <strong>Aluízio Restaurante Da Charque</strong> não é apenas um lugar para comer; é um marco da hospitalidade em Condado. Nossa história foi construída sobre o braseiro quente e o respeito aos ingredientes da nossa terra. 
+            <br><br>
+            Cada prato servido em nosso buffet carrega o segredo da charque artesanal e o carinho do tempero caseiro. Somos o ponto de encontro de famílias e viajantes que buscam o verdadeiro sabor do Nordeste, servido com a fartura e a alegria que só quem ama o que faz pode oferecer.
+        </p>
+    </div>
+</section>
+
+<div class="cardapio-container reveal">
+    <h2 class="titulo-cardapio">Explore Nosso Sabor</h2>
+    
+    <div class="grid-3-colunas">
+        <div class="coluna">
+            <div class="header-classe" onclick="toggleMenu(this)">
+                <h3>Feijões & Acompanhamentos</h3>
+                <span class="seta">▼</span>
+            </div>
+            <ul class="lista-itens">
+                <li class="item-lista">Feijão Preto Especial</li>
+                <li class="item-lista">Feijão Mulato Tradicional</li>
+                <li class="item-lista">Fava à Moda da Casa</li>
+                <li class="item-lista">Feijão de Corda (Verde)</li>
+                <li class="item-lista">Pirão de Charque</li>
+            </ul>
+        </div>
+
+        <div class="coluna">
+            <div class="header-classe" onclick="toggleMenu(this)">
+                <h3>Carnes na Brasa</h3>
+                <span class="seta">▼</span>
+            </div>
+            <ul class="lista-itens">
+                <li class="item-lista">Charque Assada na Brasa</li>
+                <li class="item-lista">Maminha Premium</li>
+                <li class="item-lista">Carne de Sol de Primeira</li>
+                <li class="item-lista">Frango Grelhado</li>
+                <li class="item-lista">Toscana Artesanal</li>
+            </ul>
+        </div>
+
+        <div class="coluna">
+            <div class="header-classe" onclick="toggleMenu(this)">
+                <h3>Cozidos & Variedades</h3>
+                <span class="seta">▼</span>
+            </div>
+            <ul class="lista-itens">
+                <li class="item-lista">Boi ao Molho Regional</li>
+                <li class="item-lista">Fígado Acebolado</li>
+                <li class="item-lista">Frango ao Molho Pardo</li>
+                <li class="item-lista">Isca de frango Crocante</li>
+                <li class="item-lista">Peixe ao Molho de Coco</li>
+                <li class="item-lista">Peixe Empanado</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="observacao-box reveal">
+        <h4 style="font-family: 'Playfair Display'; font-size: 1.8rem; color: var(--marrom);">🛵 Quentinhas & Delivery</h4>
+        <p style="margin: 15px 0;">Nossas quentinhas saem <strong>a partir de R$ 20,00</strong>.</p>
+        <p>⭐ <strong>Upgrade:</strong> + R$ 5,00 para quentinha maior + Purê e Vinagrete.</p>
+        <p style="margin-top: 20px; font-weight: bold; background: var(--marrom); color: var(--ouro); display: inline-block; padding: 10px 25px; border-radius: 30px;">
+            Taxa de entrega fixa: R$ 3,00
+        </p>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="https://wa.me/5581993048735" class="btn-whats" target="_blank">CLIQUE AQUI E PEÇA PELO WHATSAPP</a>
+    </div>
+</div>
+
+<footer>
+    <p style="font-family: 'Playfair Display'; font-size: 1.5rem; color: var(--ouro);">Aluízio Restaurante Da Charque</p>
+    <p style="margin-top: 10px;">📍 Condado - Pernambuco | Próximo à BR-408</p>
+    <p>📲 Atendimento: <strong>(81) 99304-8735</strong></p>
+    <div style="margin-top: 30px; font-size: 0.8rem; opacity: 0.5;">©️ 2026 O sabor da tradição em Condado.</div>
+</footer>
+
+<script>
+    function toggleMenu(elemento) {
+        elemento.parentElement.classList.toggle('ativa');
+    }
+
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            if (elementTop < windowHeight - 100) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+
+    window.addEventListener("scroll", reveal);
+    reveal();
+</script>
+
+</body>
+</html>
